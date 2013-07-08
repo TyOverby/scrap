@@ -108,7 +108,7 @@ case 10:
 break;
 case 11: this.$ = mkNode('sexpr', $$[$0-1], _$[$0-2], _$[$0] )
 break;
-case 12: this.$ = mkNode('sexpr', list, _$[$0-1], _$[$01])
+case 12: this.$ = mkNode('sexpr', [], _$[$0-1], _$[$0])
 break;
 case 13: this.$ = mkNode('list', $$[$0-1], _$[$0-2], _$[$0]) 
 break;

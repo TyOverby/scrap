@@ -66,7 +66,7 @@ list: list expression {
     ;
 
 sexpr: '(' list ')' { $$ = mkNode('sexpr', $list, @1, @3 )}
-     | '(' ')' { $$ = mkNode('sexpr', $list, @1, @3)}
+     | '(' ')' { $$ = mkNode('sexpr', [], @1, @2)}
      ;
 
 list_literal: '[' list ']' { $$ = mkNode('list', $list, @1, @3) }

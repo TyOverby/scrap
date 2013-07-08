@@ -1,30 +1,37 @@
 var _ = require('underscore');
 
-function slice(what, from, to){
+function slice(what, from, to) {
+    "use strict";
     return Array.prototype.slice.call(what, from, to);
 }
 
 // TODO(tyoverby) make it print useful things
 // using the node info
 function demand(cond, msg, node) {
+    "use strict";
     msg = msg || "";
 
-    if(!cond){
-        throw msg;
+    if (!cond) {
+        throw new Error(msg);
     }
+    return 0;
 }
 
 function mkString(arr, start, sep, end) {
-    if(!sep)
+    "use strict";
+    if (!sep) {
         sep = start;
+    }
 
     var toReturn = start;
-    _.forEach(_.initial(arr), function (elem){
+    _.forEach(_.initial(arr), function (elem) {
         toReturn += elem.toString();
         toReturn += sep;
     });
 
-    toReturn += _.last(arr).toString();
+    if (arr.length !== 0) {
+        toReturn += _.last(arr).toString();
+    }
     toReturn += end;
 
     return toReturn;

@@ -1,101 +1,186 @@
 var parser = require('../grammar/grammar');
 var compiler = require('../src/recursiveCompiler');
 
-exports.testIdentifierConversion = function(test) {
-
+exports.testIdentifierConversion = function (test) {
+    "use strict";
     (function () {
         var orig = "test-identifier",
             should = "testIdentifier",
             actual = compiler.transformIdent(orig);
 
-        test.equals(should, actual);
-    })();
+        test.equals(actual, should);
+    }());
 
     (function () {
         var orig = "this-is-a-larger-identifier",
             should = "thisIsALargerIdentifier",
             actual = compiler.transformIdent(orig);
-        test.equals(should, actual);
-    })();
+        test.equals(actual, should);
+    }());
 
     test.done();
 };
 
-function compile(program){
+function compile(program) {
+    "use strict";
     return compiler.compileIter(parser.parse(program)[0]);
-};
+}
 
-exports.testArrayNumber = function(test){
-    (function (){
+exports.testArrayNumber = function (test) {
+    "use strict";
+    (function () {
         var program = "[1 2 3 4 5 6]",
             should = "[1,2,3,4,5,6]",
             actual = compile(program);
 
-        test.equals(should, actual);
-        console.log("test");
-    })();
-    (function (){
+        test.equals(actual, should);
+    }());
+    (function () {
         var program = "[1 2 [3.1 3.2 3.4] 4 5 6]",
             should = "[1,2,[3.1,3.2,3.4],4,5,6]",
             actual = compile(program);
 
-        test.equals(should, actual);
-        console.log("test");
-    })();
-   test.done();
+        test.equals(actual, should);
+    }());
+    test.done();
 };
 
-exports.testObjLiteral = function(test) {
+exports.testObjLiteral = function (test) {
+    "use strict";
     (function () {
-            var program = "{'a: 5, \"b\": \"hi\"}",
-                should="{'a':5,\"b\":\"hi\"}",
-                actual = compile(program);
-        test.equals(should, actual);
-    })();
-
-   (function () {
-        var program = "{'a: [1 2 3 4], \"b\": \"hi\"}",
-            should="{'a':[1,2,3,4],\"b\":\"hi\"}",
+        var program = "{'a: 5, \"b\": \"hi\"}",
+            should = "{'a':5,\"b\":\"hi\"}",
             actual = compile(program);
-        test.equals(should, actual);
-    })();
+        test.equals(actual, should);
+    }());
+
+    (function () {
+        var program = "{'a: [1 2 3 4], \"b\": \"hi\"}",
+            should = "{'a':[1,2,3,4],\"b\":\"hi\"}",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
     test.done();
 };
 
 exports.testLet = function (test) {
+    "use strict";
     (function () {
         var program = "(let ((a 5)(b 6)) (log a))",
-            should = "(function (a,b) {return log(a);\n}(5,6))",
+            should = "(function (a,b) {\nreturn log(a);\n}(5,6))",
             actual = compile(program);
 
-        test.equals(should, actual);
-    })();
+        test.equals(actual, should);
+    }());
+
+    (function () {
+        var program = "(let ((a (f a b))) (log a))",
+            should = "(function (a) {\nreturn log(a);\n}(f(a,b)))",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
 
     test.done();
 };
 
 exports.testFunctionCall = function (test) {
-    (function (){
+    "use strict";
+    (function () {
         var program = "(fn a (gn x 5 'hi) \"hi\")",
             should = "fn(a,gn(x,5,'hi'),\"hi\")",
             actual = compile(program);
 
-        test.equals(should, actual);
-    })();
+        test.equals(actual, should);
+    }());
+    test.done();
 };
 
+exports.testLetStar = function (test) {
+    "use strict";
+    (function () {
+        var program = "(let* ((test 5) (lol 'hi)) (log lol test))",
+            should = "(function () {\nvar test = 5,\nlol = 'hi';\nreturn log(lol,test);\n}())",
+            actual = compile(program);
 
+        test.equals(actual, should);
+    }());
 
+    test.done();
+};
 
+exports.testDefine = function (test) {
+    "use strict";
+    (function () {
+        var program = "(define x 5)",
+            should = "var x = 5;",
+            actual = compile(program);
 
+        test.equals(actual, should);
+    }());
 
+    (function () {
+        var program = "(define this.x (f a b c))",
+            should = "this.x = f(a,b,c);",
+            actual = compile(program);
 
+        test.equals(actual, should);
+    }());
 
+    test.done();
+};
 
+exports.testLambda = function (test) {
+    "use strict";
+    (function () {
+        var program = "(lambda (x) (log x))",
+            should = "(function (x) {\nreturn log(x);\n})",
+            actual = compile(program);
 
+        test.equals(actual, should);
+    }());
 
+    (function () {
+        var program = "(lambda () (log 'hi))",
+            should = "(function () {\nreturn log('hi');\n})",
+            actual = compile(program);
 
+        test.equals(actual, should);
+    }());
 
+    test.done();
+};
 
+exports.testEasyOps = function (test) {
+    "use strict";
 
+    (function () {
+        var program = "(+ 1 2 3 4)",
+            should = "(1+2+3+4+0)",
+            actual = compile(program);
 
+        test.equals(actual, should);
+    }());
+
+    (function () {
+        var program = "(* 1 2 3 4)",
+            should = "(1*2*3*4*1)",
+            actual = compile(program);
+
+        test.equals(actual, should);
+    }());
+
+    test.done();
+};
+
+exports.testif = function (test) {
+    "use strict";
+
+    (function () {
+        var program = "(if true 4 'hi)",
+            should = "((true):(4)?('hi'))",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    test.done();
+};
