@@ -1,11 +1,13 @@
 var _ = require('underscore'),
     sexpr = require('./sexpression'),
-    util = require('./util.js');
+    util = require('./util.js'),
+    parser = require('../grammar/grammar.js');
 
-function compile(node, callback) {
+function compile(prog) {
     "use strict";
 
-    callback(compileIter(node));
+    var parsedExprs = parser.parse(prog);
+    return _.map(parsedExprs, compileIter).join("\n");
 }
 
 function transformIdent(ident) {
@@ -13,28 +15,33 @@ function transformIdent(ident) {
 
 
     function genFolder(op, memo) {
-        return "(function (){\n" +
-            "return _.reduce(arguments, function (memo, num) {\n" +
-            "return memo " + op + "num;}," + memo + ");})";
+        return "(function (a, b) {return (a||" + memo + ")" + op + "(b || " + memo + ");})";
     }
 
-    // TODO(tyoverby): Fix this to work with
-//    switch (ident) {
-//        case '+':
-//            return genFolder('+', '0');
-//        case '-':
-//            return genFolder('-', '0');
-//        case '*':
-//            return genFolder('*', '1');
-//        case '/':
-//            return genFolder('/', '1');
-//        case '%':
-//            return genFolder('%', '1');
-//        case 'and':
-//            return genFolder('&&', 'true');
-//        case 'or':
-//            return genFolder('||', 'false');
-//    }
+    switch (ident) {
+        case '+':
+            return genFolder('+', '0');
+        case '-':
+            return genFolder('-', '0');
+        case '*':
+            return genFolder('*', '1');
+        case '/':
+            return genFolder('/', '1');
+        case '%':
+            return genFolder('%', '1');
+        case 'and':
+            return genFolder('&&', 'true');
+        case 'or':
+            return genFolder('||', 'false');
+    }
+
+    if (ident.indexOf('#') === 0) {
+        return "(function (a) {return a[" + ident.slice(1) + "];})";
+    }
+
+    if(ident.indexOf('.') === 0) {
+        return "(function (___obj___) { return ___obj___["+ident.slice(1)+"].apply(Array.prototype.slice.call(arguments,1)); })";
+    }
 
     var point = ident.indexOf('-');
     if (point === -1) {
@@ -69,6 +76,10 @@ function compileIter(node) {
 
     }
     return "FAIL!: " + JSON.stringify(node) + " could not be matched.";
+}
+
+if (typeof window !== 'undefined') {
+    window.compile = compile;
 }
 
 function parseSExpr(node) {

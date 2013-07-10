@@ -60,6 +60,12 @@ exports.testObjLiteral = function (test) {
             actual = compile(program);
         test.equals(actual, should);
     }());
+    (function () {
+        var program = "{a: 5}",
+            should = "{a:5}",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
     test.done();
 };
 
@@ -155,7 +161,7 @@ exports.testEasyOps = function (test) {
 
     (function () {
         var program = "(+ 1 2 3 4)",
-            should = "(1+2+3+4+0)",
+            should = "(1+2+3+4)",
             actual = compile(program);
 
         test.equals(actual, should);
@@ -163,7 +169,7 @@ exports.testEasyOps = function (test) {
 
     (function () {
         var program = "(* 1 2 3 4)",
-            should = "(1*2*3*4*1)",
+            should = "(1*2*3*4)",
             actual = compile(program);
 
         test.equals(actual, should);
@@ -177,7 +183,73 @@ exports.testif = function (test) {
 
     (function () {
         var program = "(if true 4 'hi)",
-            should = "((true):(4)?('hi'))",
+            should = "((true)?(4):('hi'))",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    (function () {
+        var program = "(if (f) (g a) 'no)",
+            should = "((f())?(g(a)):('no'))",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    test.done();
+};
+
+exports.testcond = function (test) {
+    "use strict";
+
+    (function () {
+        var program = "(cond ((f) 'hi) ((g a b) (r c)))",
+            should = "(function () {\nif (f()) {\nreturn 'hi';\n}" +
+                " else if (g(a,b)) {\nreturn r(c);\n} else {\n" +
+                "throw new Error(\"No Match Found. always terminate with a 'true'\");" + "\n}\n" + "}())",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    test.done();
+};
+
+exports.testSet = function (test) {
+    "use strict";
+
+    (function () {
+        var program = "(set x 5)",
+            should = "x = 5;",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+    test.done();
+};
+
+exports.testMethod = function (test) {
+    "use strict";
+
+    (function () {
+        var program = "(.getter obj)",
+            should = "obj.getter()",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    (function () {
+        var program = "(.push [1 2 3] 4)",
+            should = "[1,2,3].push(4)",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    test.done();
+};
+
+exports.prop = function (test) {
+    "use strict";
+    (function () {
+        var program = "(#length [1 2 3])",
+            should = "[1,2,3].length",
             actual = compile(program);
         test.equals(actual, should);
     }());

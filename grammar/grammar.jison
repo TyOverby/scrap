@@ -74,7 +74,7 @@ list_literal: '[' list ']' { $$ = mkNode('list', $list, @1, @3) }
             ;
 
 
-key_value_pair: IDENT ':' expression {$$ = mkNode('key_value', mkPair($IDENT, $expression), @IDENT, @expression) }
+key_value_pair: IDENT ':' expression {$$ = mkNode('key_value', mkPair(mkNode('identifier', $IDENT, @1), $expression), @IDENT, @expression) }
               | quote_ident ':' expression {$$ = mkNode('key_value', mkPair($quote_ident, $expression), @quote_ident, @expression)}
               | STRING ':' expression {$$ = mkNode('key_value', mkPair( mkNode('string', $STRING, @1), $expression), @STRING, @expression)}
               ;

@@ -1,5 +1,5 @@
 var _ = require('underscore'),
-    util = require('./util');
+    util = require('../util');
 
 function compileLet(node, compile) {
     "use strict";

@@ -1,4 +1,4 @@
-var util = require('./util.js'),
+var util = require('./../util.js'),
     _ = require('underscore');
 
 function compileLambda(node, compile) {

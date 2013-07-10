@@ -1,4 +1,12 @@
-cond
-set!
+switch
+macros?
+all of the equality operators!
+nth
+#property
+.method
 
 Make the fucking error messages better
+
+build all the standard forms into the lexer/parser
+
+set can only go in the non-final part of an expression?

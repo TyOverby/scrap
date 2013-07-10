@@ -6,6 +6,7 @@
     "dependencies": {
         "jison": "0.4.6",
         "nodeunit": "0.8.1",
-        "underscore": "1.4.4"
+        "underscore": "1.4.4",
+        "browserify": "2.25.0"
     }
 }

@@ -1,5 +1,4 @@
 var grammar = require('../grammar/grammar');
-var fs = require('fs');
 var comp = require('./recursiveCompiler');
 
 function compile(file, callback) {

@@ -114,7 +114,7 @@ case 13: this.$ = mkNode('list', $$[$0-1], _$[$0-2], _$[$0])
 break;
 case 14: this.$ = mkNode('list', emptyList(), _$[$0-1], _$[$0]) 
 break;
-case 15:this.$ = mkNode('key_value', mkPair($$[$0-2], $$[$0]), _$[$0-2], _$[$0]) 
+case 15:this.$ = mkNode('key_value', mkPair(mkNode('identifier', $$[$0-2], _$[$0-2]), $$[$0]), _$[$0-2], _$[$0]) 
 break;
 case 16:this.$ = mkNode('key_value', mkPair($$[$0-2], $$[$0]), _$[$0-2], _$[$0])
 break;
