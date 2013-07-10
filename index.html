@@ -1,0 +1,68 @@
+<html>
+<head>
+    <title>Test</title>
+    <script src="./underscore-min.js"></script>
+    <script src="./out.js"></script>
+    <style>
+        textarea {
+            position:absolute;
+        }
+        #input {
+            top:0;
+            left:0;
+            width:501px;
+            height:500px;
+        }
+        #gen {
+            top:0;
+            left:500px;
+            width:250px;
+            height:250px;
+        }
+        #out {
+            top:249px;
+            left:500px;
+            width:250px;
+            height:251px;
+        }
+        button {
+            position: relative;
+            top: 550px;
+        }
+    </style>
+</head>
+<body>
+<textarea id="input"></textarea>
+<textarea id="gen" readonly ></textarea>
+<textarea id="out" readonly ></textarea>
+<br>
+<button id="compileBtn">Compile</button>
+<button id="runBtn">Run</button>
+
+<script>
+    (function () {
+
+        var inputArea = document.getElementById("input");
+        var genArea = document.getElementById("gen");
+        var outArea = document.getElementById("out");
+        var compBtn = document.getElementById("compileBtn");
+        var runBtn = document.getElementById("runBtn");
+
+        console.log = window.log = function (text) {
+            outArea.value = outArea.value + text + "\n";
+        };
+
+        compBtn.onclick = function () {
+            genArea.value = compile(inputArea.value);
+        };
+
+        runBtn.onclick = function () {
+            outArea.value = "";
+            var prog = genArea.value;
+            eval("with(_){" + prog + "}");
+        };
+    }());
+
+</script>
+</body>
+</html>
