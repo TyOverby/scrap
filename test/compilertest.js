@@ -256,3 +256,15 @@ exports.prop = function (test) {
 
     test.done();
 };
+
+exports.equality = function (test) {
+    "use strict";
+    (function () {
+        var program = "(= 4 5)",
+            should = "(4===5)",
+            actual = compile(program);
+        test.equals(actual, should);
+    }());
+
+    test.done();
+};
