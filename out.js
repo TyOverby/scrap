@@ -83,15 +83,15 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1: return $$[$0-1];
+case 1: return $$[$0-1]; 
 break;
-case 2: this.$ = mkNode('identifier', $$[$0], _$[$0])
+case 2: this.$ = mkNode('identifier', $$[$0], _$[$0]) 
 break;
 case 3: this.$ = mkNode('string', $$[$0], _$[$0])
 break;
 case 4: this.$ = mkNode('number', $$[$0], _$[$0])
 break;
-case 5: this.$=$$[$0]
+case 5: this.$=$$[$0] 
 break;
 case 6: this.$ = $$[$0]
 break;
@@ -101,21 +101,21 @@ case 8:this.$ = $$[$0]
 break;
 case 9:
         this.$ = $$[$0-1]; this.$.push($$[$0]);
-
+      
 break;
 case 10:
         this.$ = [$$[$0]];
-
+      
 break;
 case 11: this.$ = mkNode('sexpr', $$[$0-1], _$[$0-2], _$[$0] )
 break;
 case 12: this.$ = mkNode('sexpr', [], _$[$0-1], _$[$0])
 break;
-case 13: this.$ = mkNode('list', $$[$0-1], _$[$0-2], _$[$0])
+case 13: this.$ = mkNode('list', $$[$0-1], _$[$0-2], _$[$0]) 
 break;
-case 14: this.$ = mkNode('list', emptyList(), _$[$0-1], _$[$0])
+case 14: this.$ = mkNode('list', emptyList(), _$[$0-1], _$[$0]) 
 break;
-case 15:this.$ = mkNode('key_value', mkPair(mkNode('identifier', $$[$0-2], _$[$0-2]), $$[$0]), _$[$0-2], _$[$0])
+case 15:this.$ = mkNode('key_value', mkPair(mkNode('identifier', $$[$0-2], _$[$0-2]), $$[$0]), _$[$0-2], _$[$0]) 
 break;
 case 16:this.$ = mkNode('key_value', mkPair($$[$0-2], $$[$0]), _$[$0-2], _$[$0])
 break;
@@ -123,11 +123,11 @@ case 17:this.$ = mkNode('key_value', mkPair( mkNode('string', $$[$0-2], _$[$0-2]
 break;
 case 18:
                 this.$ = $$[$0-1], this.$.push($$[$0]);
-
+               
 break;
 case 19:
                 this.$ = [$$[$0]];
-
+               
 break;
 case 20: this.$ = mkNode('obj_lit', $$[$0-1], _$[$0-2], _$[$0])
 break;
@@ -623,29 +623,29 @@ case 0:
 break;
 case 1:
 break;
-case 2: return 14;
+case 2: return 14; 
 break;
-case 3: return 15;
+case 3: return 15; 
 break;
-case 4: return 16;
+case 4: return 16; 
 break;
-case 5: return 17;
+case 5: return 17; 
 break;
-case 6: return 21;
+case 6: return 21; 
 break;
-case 7: return 22;
+case 7: return 22; 
 break;
-case 8: return 19;
+case 8: return 19; 
 break;
-case 9: return 23;
+case 9: return 23; 
 break;
 case 10:return 9;
 break;
-case 11:return 8;
+case 11:return 8; 
 break;
-case 12: return 7;
+case 12: return 7; 
 break;
-case 13: return 5;
+case 13: return 5; 
 break;
 }
 },
@@ -774,7 +774,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-
+  
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -2372,11 +2372,11 @@ function transformIdent(ident) {
     }
 
     if (ident.indexOf('#') === 0) {
-        return "(function (a) {return a[" + ident.slice(1) + "];})";
+        return "(function (a) {return a['" + ident.slice(1) + "'];})";
     }
 
     if(ident.indexOf('.') === 0) {
-        return "(function (___obj___) { return ___obj___["+ident.slice(1)+"].apply(Array.prototype.slice.call(arguments,1)); })";
+        return "(function (___obj___) { return ___obj___['"+ident.slice(1)+"'].apply(Array.prototype.slice.call(arguments,1)); })";
     }
 
     var point = ident.indexOf('-');
@@ -2500,7 +2500,7 @@ function compileFCall(node, compile) {
     "use strict";
 
 
-    var fn = compile(node.value[0]),
+    var fn = node.value[0].value,
         rest = _.tail(node.value);
 
     if (node.value[0].type === 'identifier' && fn.indexOf(".") === 0) {
@@ -2511,7 +2511,7 @@ function compileFCall(node, compile) {
         return compile(rest[0]) + '.' + fn.slice(1);
     }
 
-    return fn + util.mkString(_.map(rest, compile), '(', ',', ')');
+    return compile(node.value[0]) + util.mkString(_.map(rest, compile), '(', ',', ')');
 }
 
 
