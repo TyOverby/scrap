@@ -2474,6 +2474,9 @@ function compileSexpressions(node, recursiveCompiler) {
         case '%':
             util.demand(rest.length === 2, "Modulo takes two arguments.");
             return "(" + recursiveCompiler(rest[0]) + "%" + recursiveCompiler(rest[1]) + ")";
+        case '=':
+            util.demand(rest.length === 2, "equality takes two arguments.");
+            return "(" + recursiveCompiler(rest[0]) + "===" + recursiveCompiler(rest[1]) + ")";
     }
 
     switch (first) {
