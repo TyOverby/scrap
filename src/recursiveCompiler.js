@@ -36,11 +36,11 @@ function transformIdent(ident) {
     }
 
     if (ident.indexOf('#') === 0) {
-        return "(function (a) {return a[" + ident.slice(1) + "];})";
+        return "(function (a) {return a['" + ident.slice(1) + "'];})";
     }
 
     if(ident.indexOf('.') === 0) {
-        return "(function (___obj___) { return ___obj___["+ident.slice(1)+"].apply(Array.prototype.slice.call(arguments,1)); })";
+        return "(function (___obj___) { return ___obj___['"+ident.slice(1)+"'].apply(Array.prototype.slice.call(arguments,1)); })";
     }
 
     var point = ident.indexOf('-');

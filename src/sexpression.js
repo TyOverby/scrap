@@ -67,7 +67,7 @@ function compileFCall(node, compile) {
     "use strict";
 
 
-    var fn = compile(node.value[0]),
+    var fn = node.value[0].value,
         rest = _.tail(node.value);
 
     if (node.value[0].type === 'identifier' && fn.indexOf(".") === 0) {
@@ -78,7 +78,7 @@ function compileFCall(node, compile) {
         return compile(rest[0]) + '.' + fn.slice(1);
     }
 
-    return fn + util.mkString(_.map(rest, compile), '(', ',', ')');
+    return compile(node.value[0]) + util.mkString(_.map(rest, compile), '(', ',', ')');
 }
 
 
