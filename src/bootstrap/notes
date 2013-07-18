@@ -1,0 +1,80 @@
+string, number, quote_ident, identifier {
+    value: string
+}
+
+lambda {
+    vars: [identifier]
+    exprs: [expression]
+}
+
+begin {
+    exprs: [expression]
+}
+
+cond {
+    pairs: [ cond_pair {
+        l: expression
+        r: expression
+    } ]
+}
+
+define {
+    l: identifier
+    r: expression
+}
+
+if {
+    cond: expression
+    thn: expression
+    els: expression
+}
+
+let {
+    pairs: [ let_pair {
+        l: identifier
+        r: expression
+    }]
+    exprs: [expression]
+}
+
+letrec // exactly the same as let
+
+set {
+    dot_ident: identifier
+    value: expression
+}
+
+setp {
+    dot_ident: dot_identifier
+    obj: expression
+    value: expression
+}
+
+switch {
+    expr: expression
+
+    pairs: [ switch_pair {
+        l: expression
+        r: expression
+    }]
+
+    default: default_pair {
+        expr: expression
+    }
+}
+
+thunk {
+    exprs: [expression]
+}
+
+attribute {
+    attr: identifier
+    expr: expression
+}
+
+
+method {
+    name: identifier
+    expr: expression
+    args: [expression]
+}

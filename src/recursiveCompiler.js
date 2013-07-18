@@ -40,7 +40,7 @@ function transformIdent(ident) {
     }
 
     if(ident.indexOf('.') === 0) {
-        return "(function (___obj___) { return ___obj___['"+ident.slice(1)+"'].apply(Array.prototype.slice.call(arguments,1)); })";
+        return "(function () { return arguments[0]['"+ident.slice(1)+"'].apply(Array.prototype.slice.call(arguments,1)); })";
     }
 
     var point = ident.indexOf('-');

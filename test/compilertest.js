@@ -268,3 +268,13 @@ exports.equality = function (test) {
 
     test.done();
 };
+
+exports.switchc = function (test) {
+    "use strict";
+    (function (){
+        var program = "(switch x (5 'hi) ((+ 1 2) g) ((f) (p a) (default 10))",
+            should = "(function (){\nswitch(x){\ncase 5: return 'hi'\n}())";
+    }());
+
+    test.done();
+};

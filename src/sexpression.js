@@ -6,7 +6,8 @@ var util = require('./util.js'),
     lambda = require('./builtin/lambda'),
     ifc = require('./builtin/ifc.js'),
     cond = require('./builtin/cond.js'),
-    setc = require('./builtin/set.js');
+    setc = require('./builtin/set.js'),
+    switchc = require('./builtin/switchc.js');
 
 function compileSexpressions(node, recursiveCompiler) {
     "use strict";
@@ -61,6 +62,8 @@ function compileSexpressions(node, recursiveCompiler) {
             return cond(node, recursiveCompiler);
         case 'set':
             return setc(node, recursiveCompiler);
+        case 'switch':
+            return switchc(node, recursiveCompiler);
         default:
             return compileFCall(node, recursiveCompiler);
     }
